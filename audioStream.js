@@ -19,8 +19,7 @@ var audioStream = function(fillBuffer) {
         }
 
         node.connect(context.destination);
-        //Stop Chrome from throwing node out
-        window["node" + Math.random()] = node;
+        return node;
     }
     else {
         var audio = new Audio();
@@ -37,5 +36,6 @@ var audioStream = function(fillBuffer) {
                 audio.mozWriteAudio(samples); 
             }
         }, 10);
+        return node;
     }
 }
