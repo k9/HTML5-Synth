@@ -32,22 +32,22 @@ var sampleSquare = function(note, time, notePos) {
 
 var melodySynth = function(note, time, notePos) {
     if(note == NO_NOTE) return 0;
-    var decay = 0.2;
-    var sample = sampleSquare(note, time, notePos) * 0.005;
-    sample += sampleSine(note, time, notePos) * 0.995;
+    var decay = 0.01;
+    var sample = sampleTriangle(note, time, notePos) * 0.05;
+    sample += sampleSine(note, time, notePos) * 0.95;
     sample *= Math.pow(1 - (notePos * decay), 4);
     return sample;
 };
 
 var bassSynth = function(note, time, notePos) {
     if(note == NO_NOTE) return 0;
-    var sample = sampleTriangle(note, time, notePos) * 0.001;
-    sample += sampleSine(note, time, notePos) * 0.999;
+    var sample = sampleTriangle(note, time, notePos) * 0.005;
+    sample += sampleSine(note, time, notePos) * 0.995;
     return sample;
 };
 
 var drumSynth = function(note, time, notePos) {
-    if(note > 2) return 0;
+    if(note > 3) return 0;
     
     if(note == 1) {  //snare
         var sample = mix(sampleSine(35, time, notePos), Math.random() * 2 - 1, 0.5);
@@ -56,8 +56,14 @@ var drumSynth = function(note, time, notePos) {
     }
 
     if(note == 2) {  //bass drum
-        var sample = mix(sampleSine(5, time, notePos), Math.random() * 2 - 1, 0.002);
+        var sample = mix(sampleSine(10, time, notePos), Math.random() * 2 - 1, 0.002);
         sample *= Math.pow(1 - notePos, 6);
+        return sample;
+    }
+
+    if(note == 3) {  //hi hat
+        var sample = mix(sampleSine(80, time, notePos), Math.random() * 2 - 1, 0.75);
+        sample *= 0.1 * Math.pow(1 - notePos, 24);
         return sample;
     }
 };
@@ -85,6 +91,7 @@ var playVoices = function(voices, time, volume, bpm) {
         var noteNum = Math.floor(songPos);
         var notePos = songPos % 1;
 
+        voices[j].nextNoteNum = noteNum + 1 % voices[j].notes.length;
         voices[j].note = voices[j].notes[noteNum];
         var prevNoteNum = noteNum == 0 ? voices[j].notes.length - 1 : noteNum - 1;
         voices[j].prevNote = voices[j].notes[prevNoteNum];

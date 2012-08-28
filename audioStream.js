@@ -6,7 +6,7 @@ var audioStream = function(fillBuffer) {
 
     if(typeof webkitAudioContext != "undefined") {
         var context = new webkitAudioContext();
-        var node = context.createJavaScriptNode(BUFFER_SIZE, 1, 1);
+        var node = context.createJavaScriptNode(BUFFER_SIZE, 2);
         node.onaudioprocess = function(e) {
             var left = e.outputBuffer.getChannelData(0), 
                 right = e.outputBuffer.getChannelData(1);
