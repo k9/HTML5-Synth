@@ -1,0 +1,1 @@
+`audioStream.js` is an experiment in streaming audio through both WebkitAudioContext and the Audio Data API. No longer needed now that [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) is the standard.
